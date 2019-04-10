@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Rock-Papers-Scissors</title>
+
+  <!-- responsive meta tag -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- bootsrap cdn -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- css file -->
+  <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  <!-- google font -->
+  <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- ! HEADER -->
+  <div class="container text-center shadow-sm p-3 bg-white rounded" id="css_header">
+    <h1 class="text-warning css_headerh1">Rock-Paper-Scissors</h1>
+    <h3 class="text-light css_headerh3">- Multiplayer Game -</h3>
+  </div>
+
+  <!-- ! NEW GAME CONTAINER -->
+  <div class="container shadow-sm p-3 mb-5 bg-light rounded" id="newgamecontainer">
+
+    <!-- ! step 1 username -->
+    <p class="lead text-dark mt-2 font-weight-bold">Step 1. Enter Username</p>
+    <form>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text"><i class="fas fa-user"></i></div>
+        </div>
+        <input type="text" class="form-control" maxlength="8" placeholder="Username" id="usernameinput">
+      </div>
+    </form>
+    <div class="form-check mb-2">
+      <input class="form-check-input" type="checkbox" id="remembermeinput">
+      <label class="form-check-label text-muted" for="autoSizingCheck">Remember me on this device</label>
+    </div>
+
+    <!-- ! step 2.1 select mode - create new room -->
+    <p class="lead text-dark mt-2 font-weight-bold">Step 2. Select Mode</p>
+    <p class="lead text-center">To play this game you either need to create a new room</p>
+    <div class="text-center mt-3 mb-3">
+      <button type="button" class="btn btn-primary" id="createnewroombttn">Create New Room</button>
+    </div>
+
+    <!-- ! step 2.1 select mode - join a room -->
+    <p class="lead text-center">Or enter a room key from a friend</p>
+    <div class="row">
+      <div class="col-2">
+      </div>
+      <div class="col-8">
+        <form>
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><i class="fas fa-key"></i></div>
+            </div>
+            <input type="text" class="form-control" maxlength="20" placeholder="Ex. room15" id="roomkeyinput">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="text-center mt-3 mb-3">
+      <button type="button" class="btn btn-dark" id="joinroom">Join Room</button>
+    </div>
+  </div>
+
+  <!-- ! GAME CONTAINER -->
+  <div class="container shadow-sm p-3 mb-5 bg-light rounded" id="gamecontainer">
+    <p class="text-dark mb-0">Your game room is:
+      <span class="font-weight-bolder text-dark" id="gamekey"></span>
+    </p>
+    <hr>
+    <p class="lead text-center">You are alone in the room</p>
+    <hr>
+    <!-- * my player -->
+    <h1 class="text-center text-primary" id="myusername"></h1>
+    <div class="container">
+      <!-- rock option -->
+      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center css_opteffect">
+        <i class="fas fa-hand-rock mr-2 css_rps"></i>
+        <h1 class="text-left css_rps_word">Rock</h1>
+      </div>
+      <!-- paper option -->
+      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center css_opteffect">
+        <i class="fas fa-hand-paper mr-2 css_rps"></i>
+        <h1 class="text-left css_rps_word">Paper</h1>
+      </div>
+      <!-- scissors option -->
+      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center css_opteffect">
+        <i class="fas fa-hand-scissors mr-2 css_rps"></i>
+        <h1 class="text-left css_rps_word">Scissors</h1>
+      </div>
+      <!-- * my opponent -->
+      <h1 class="text-center text-danger mt-4" id="myopponent">-</h1>
+      <div class="container mt-2">
+        <!-- rock option -->
+        <div class="row shadow-sm p-3 bg-white rounded css_opteffect">
+          <div class="col-12 text-center">
+            <i class="fas fa-question css_rps"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ! LINKS -->
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+
+    <!-- firebase stuff -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.3/firebase.js"></script>
+    <script>
+      var config = {
+        apiKey: "AIzaSyASUJ0fBwzKx-OBFDwGwzFeNgSGHWhFZKM",
+        authDomain: "rps-project-f562d.firebaseapp.com",
+        databaseURL: "https://rps-project-f562d.firebaseio.com",
+        projectId: "rps-project-f562d",
+        storageBucket: "",
+        messagingSenderId: "986617625412"
+      };
+      firebase.initializeApp(config);
+    </script>
+
+    <!-- javascript file -->
+    <script src="./assets/javascript/game.js"></script>
+
+</body>
+
+</html>

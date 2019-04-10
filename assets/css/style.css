@@ -1,0 +1,42 @@
+body {
+    background-image: url("../images/bg.png");
+    background-repeat: repeat;
+}
+
+#css_header {
+    background-image: url("../images/headerbg.png");
+    background-repeat: repeat;
+}
+
+/* * smaller fonts on smaller screens  */
+
+@media screen and (max-width: 600px) {
+    .css_headerh1 {
+        font-size: 30px;
+    }
+    .css_headerh3 {
+        font-size: 22px;
+    }
+    .lead {
+        font-size: 15px;
+    }
+    .css_rps {
+        font-size: 30px;
+        padding: 3px;
+    }
+}
+
+.css_rps {
+    font-size: 60px;
+    padding: 5px;
+}
+
+.css_rps_word {
+    font-family: 'Bangers', cursive;
+    padding-top: 18px;
+}
+
+.css_opteffect:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}

@@ -37,6 +37,6 @@ body {
 }
 
 .css_opteffect:hover {
-    background-color: lightblue;
+    background-color: lightblue !important;
     cursor: pointer;
 }

@@ -1,6 +1,5 @@
 // ! global variables
 var username;
-var database = firebase.database();
 
 // ! on load window function
 window.onload = function () {
@@ -34,9 +33,6 @@ $("#createnewroombttn").click(function () {
 
         // create new room on the db
         createNewRoom();
-
-        // starts a new game
-        startGame();
     }
 });
 
@@ -62,126 +58,126 @@ $("#joinroom").click(function () {
 });
 
 // ! create a new room function
-
 let createNewRoom = function () {
 
-    var roomcounter;
+    // create reference
+    const dbRef_roomcounter = firebase.database().ref().child("roomcounter");
 
-    // get the room counter from the db
-    database.ref("_roomcounter").on("child_added", function (snapshot) {
+    // ? 1 - get the value of the child roomcounter and increment it
+    dbRef_roomcounter.on("child_added", function (snap) {
 
-        roomcounter = snapshot.val();
-        roomcounter = roomcounter + 1;
+        // get it
+        var roomCounter = snap.val();
+        //increment it
+        var incRoomCounter = roomCounter + 1;
 
-        // update html
-        $("#gamekey").text("room" + roomcounter);
-        $("#myusername").text(username);
+        console.log("creating room: room" + incRoomCounter);
 
-        // update it + 1
-        database.ref("_roomcounter").set({ val: roomcounter }, errorHandler);
-
-        // create the room in the "rooms" directory with the new roomcounter
-        database.ref("rooms").push({
-
-            _playersonline: 1,
-            _roomid: "room" + roomcounter,
-            player1: username,
-            player2: ""
-
+        // ? 2 - set the incremented value to the roomcounter child
+        dbRef_roomcounter.set({
+            val: incRoomCounter
         }, errorHandler);
+
+        // ? set a new child at root level
+        // create reference
+        const dbRef_root = firebase.database().ref().child("room" + incRoomCounter);
+        // set it
+        dbRef_root.set({
+            onlineplayers: 1,
+            player1: username,
+            player2: "?"
+        }, errorHandler);
+
+        // ? run player 1 listener, send the room as a parameter
+        p1_listener("room" + incRoomCounter);
+
+        // ? update the html
+        updateHtml("This game room's key is: <b> room" + incRoomCounter + "</b>", "Share room key with a friend and start playing!");
+
     }, errorHandler);
-}
-
-// ! all the functions needed to join the room
-
-let tryToJoinRoom = function (roominput) {
-
-    // ? look through all the rooms in the root directory
-    database.ref("rooms").on("child_added", function (snapshot) {
-
-        // console.log(roominput);
-        // console.log(snapshot);
-        // console.log(snapshot.val());
-        // console.log("---------------------------------------------------------");
-
-        // if (snapshot.val()._roomid = roominput) {
-        //     console.log(snapshot.val());
-        // }
-
-        // // ? if the room input exists as a child in the db
-        // if (roominput === id) {
-
-        //     // set 2 to the players online field
-        //     database.ref("rooms").update({
-        //         _playersonline: "2"
-        //     });
-
-        // }
-        // else {
-        //     console.log("The room '" + roominput + "' doesn't exist in the database.");
-        // }
-    }, errorHandler);
-
 };
 
-let checkIfRoomExists = function (roominput, roomsArray) {
+// ! trying to join a room
+let tryToJoinRoom = function (room) {
 
-    var exists = false;
+    console.log("looking for room -> " + room);
 
-    for (var i = 0; i < roomsArray.length; i++) {
+    // create references
+    const dbRef_room = firebase.database().ref().child(room);
 
-        if (roominput === roomsArray[i]) {
+    // ? get the values of the given child (room)
+    dbRef_room.once("value", function (snap) {
 
-            exists = true;
+        console.log("online players in '" + room + "' are -> " + snap.val().onlineplayers);
+
+        // ? if the room's online players is less than 2
+        if (snap.val().onlineplayers < 2) {
+
+            var op = snap.val().onlineplayers;
+            op = op + 1;
+
+            // ? update the online players and player2 value of THAT child 
+            dbRef_room.update({
+                onlineplayers: op,
+                player2: username
+            }, errorHandler);
+
+            // ? run player 2 listener, send the room as a parameter
+            p2_listener(room);
+
+            // ? update the html
+            updateHtml("This is <b>" + snap.val().player1 + "</b>'s room.", "You joined <b>" + snap.val().player1 + "</b>'s room.");
         }
-    }
-
-    return exists;
+        else {
+            alert(room + " is full.");
+        }
+    }, errorHandler);
 };
 
-let checkIfRoomIsFull = function (roominput, cbf_getOnlinePlayers) {
+// ! user listener
+let p1_listener = function (room) {
 
-    let op = cbf_getOnlinePlayers(roominput);
+    // create reference
+    const dbRef_room = firebase.database().ref().child(room);
 
-    if (op >= 2) {
+    // ? set usernames
+    dbRef_room.on("value", function (snap) {
 
-        alert("Room is full, there are " + op + " players online.");
-    }
-    else {
+        $("#player1").text(snap.val().player1);
+        $("#player2").text(snap.val().player2);
 
-        console.log("Room is available, there are " + op + " players online.");
-        console.log("YOU CAN ENTER THE GAME!!!");
-    }
-};
+        $("#usermsgmiddle").html("<b>" + snap.val().player2 + "</b> just joined the room!");
 
-let getOnlinePlayers = function (roominput) {
-
-    let op;
-
-    database.ref("Rooms").on("child_added", function (snapshot) {
-
-        op = snapshot.val()._playersonline;
     });
-
-    return op;
 };
 
-// ! starting the game function
+let p2_listener = function (room) {
 
-let startGame = function () {
+    // create reference
+    const dbRef_room = firebase.database().ref().child(room);
+
+    // ? set usernames
+    dbRef_room.on("value", function (snap) {
+
+        $("#player1").text(snap.val().player2);
+        $("#player2").text(snap.val().player1);
+    });
+};
+
+// ! update the html for a new game
+let updateHtml = function (usermsg1, usermsg2) {
 
     // hide and show containers
     $("#newgamecontainer").hide();
     $("#gamecontainer").show(500);
 
-    // let thisroom = roomcounter + 1;
+    // user messages
+    $("#usermsgup").html(usermsg1);
+    $("#usermsgmiddle").html(usermsg2);
 
-    // show room
-    // $("#gamekey").text("room" + thisroom);
-}
+};
 
 // ! global functions
-
 let verifyUsername = function (username) {
 
     let usernamePass;
@@ -219,4 +215,4 @@ let verifyRoomKey = function (roominput) {
 // ! error handler function
 function errorHandler(errorObject) {
     console.log("The read failed: ", errorObject);
-}
+};

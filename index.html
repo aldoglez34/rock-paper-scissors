@@ -60,7 +60,7 @@
     </div>
 
     <!-- ! step 2.1 select mode - join a room -->
-    <p class="lead text-center">Or enter a room key from a friend</p>
+    <p class="lead text-center">Or enter a game room key from a friend</p>
     <div class="row">
       <div class="col-2">
       </div>
@@ -82,39 +82,33 @@
 
   <!-- ! GAME CONTAINER -->
   <div class="container shadow-sm p-3 mb-5 bg-light rounded" id="gamecontainer">
-    <p class="text-dark mb-0">Your game room is:
-      <span class="font-weight-bolder text-dark" id="gamekey"></span>
-    </p>
+    <p class="text-dark mb-0" id="usermsgup"></p>
     <hr>
-    <p class="lead text-center">You are alone in the room</p>
+    <p class="lead text-center" id="usermsgmiddle">Message</p>
     <hr>
-    <!-- * my player -->
-    <h1 class="text-center text-primary" id="myusername"></h1>
+    <!-- ? my player -->
+    <h1 class="text-center text-primary mb-4" id="player1">player1</h1>
     <div class="container">
       <!-- rock option -->
-      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center css_opteffect">
+      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center bg-white css_opteffect">
         <i class="fas fa-hand-rock mr-2 css_rps"></i>
         <h1 class="text-left css_rps_word">Rock</h1>
       </div>
       <!-- paper option -->
-      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center css_opteffect">
+      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center bg-white css_opteffect mt-2">
         <i class="fas fa-hand-paper mr-2 css_rps"></i>
         <h1 class="text-left css_rps_word">Paper</h1>
       </div>
       <!-- scissors option -->
-      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center css_opteffect">
+      <div class="row text-center shadow-sm p-3 rounded d-flex justify-content-center bg-white css_opteffect mt-2">
         <i class="fas fa-hand-scissors mr-2 css_rps"></i>
         <h1 class="text-left css_rps_word">Scissors</h1>
       </div>
-      <!-- * my opponent -->
-      <h1 class="text-center text-danger mt-4" id="myopponent">-</h1>
-      <div class="container mt-2">
-        <!-- rock option -->
-        <div class="row shadow-sm p-3 bg-white rounded css_opteffect">
-          <div class="col-12 text-center">
-            <i class="fas fa-question css_rps"></i>
-          </div>
-        </div>
+      <!-- ? my opponent -->
+      <h1 class="text-center text-danger mb-4 mt-4" id="player2">player2</h1>
+      <div class="container mt-2 text-center">
+        <!-- option -->
+        <i class="fas fa-question css_rps"></i>
       </div>
     </div>
 

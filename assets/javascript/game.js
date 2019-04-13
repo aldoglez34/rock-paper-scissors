@@ -75,7 +75,7 @@ let createNewRoom = function () {
 
         // ? 2 - set the incremented value to the roomcounter child
         dbRef_roomcounter.set({
-            val: incRoomCounter
+            rc: incRoomCounter
         }, errorHandler);
 
         // ? set a new child at root level
@@ -84,15 +84,17 @@ let createNewRoom = function () {
         // set it
         dbRef_root.set({
             onlineplayers: 1,
-            player1: username,
-            player2: "?"
+            p1user: username,
+            p2user: "?",
+            p1pick: "?",
+            p2pick: "?"
         }, errorHandler);
 
         // ? run player 1 listener, send the room as a parameter
         p1_listener("room" + incRoomCounter);
 
         // ? update the html
-        updateHtml("This game room's key is: <b> room" + incRoomCounter + "</b>", "Share room key with a friend and start playing!");
+        updateHtml("<i class='fas fa-key'></i> <b>room" + incRoomCounter + "</b>", "Share the room key with a friend and start playing!");
 
     }, errorHandler);
 };
@@ -119,14 +121,14 @@ let tryToJoinRoom = function (room) {
             // ? update the online players and player2 value of THAT child 
             dbRef_room.update({
                 onlineplayers: op,
-                player2: username
+                p2user: username
             }, errorHandler);
 
             // ? run player 2 listener, send the room as a parameter
             p2_listener(room);
 
             // ? update the html
-            updateHtml("This is <b>" + snap.val().player1 + "</b>'s room.", "You joined <b>" + snap.val().player1 + "</b>'s room.");
+            updateHtml("<i class='fas fa-key'></i> <b>" + room + "</b>", "You joined <b>" + snap.val().p1user + "</b>'s room successfully!");
         }
         else {
             alert(room + " is full.");
@@ -143,12 +145,33 @@ let p1_listener = function (room) {
     // ? set usernames
     dbRef_room.on("value", function (snap) {
 
-        $("#player1").text(snap.val().player1);
-        $("#player2").text(snap.val().player2);
+        $("#player1").text(snap.val().p1user);
+        $("#player2").text(snap.val().p2user);
 
-        $("#usermsgmiddle").html("<b>" + snap.val().player2 + "</b> just joined the room!");
+        // notify the player 1 that someone else got in the room
+        $("#usermsgmiddle").html("<b>" + snap.val().p2user + "</b> just joined the room!");
+
+        // ? add class to the rock, paper and scissors div
+        $("#opt_rock").addClass("player1game");
+        $("#opt_paper").addClass("player1game");
+        $("#opt_scissors").addClass("player1game");
+
+        // ? listener for the rps option
+        $(".player1game").click(function () {
+
+            // set username in the global variable
+            var p1choice = $(this).attr("name");
+
+            // ? update the game room child with the option
+            console.log("player 1 chooses: " + p1choice);
+            dbRef_room.update({
+                p1pick: p1choice
+            }, errorHandler);
+
+        });
 
     });
+
 };
 
 let p2_listener = function (room) {
@@ -159,8 +182,28 @@ let p2_listener = function (room) {
     // ? set usernames
     dbRef_room.on("value", function (snap) {
 
-        $("#player1").text(snap.val().player2);
-        $("#player2").text(snap.val().player1);
+        $("#player1").text(snap.val().p2user);
+        $("#player2").text(snap.val().p1user);
+
+        // ? add class to the rock, paper and scissors div
+        $("#opt_rock").addClass("player2game");
+        $("#opt_paper").addClass("player2game");
+        $("#opt_scissors").addClass("player2game");
+
+        // ? listener for the rps option
+        $(".player2game").click(function () {
+
+            // set username in the global variable
+            var p2choice = $(this).attr("name");
+
+            // ? update the game room child with the option
+            console.log("player 2 chooses: " + p2choice);
+            dbRef_room.update({
+                p2pick: p2choice
+            }, errorHandler);
+
+        });
+
     });
 };
 

@@ -26,6 +26,34 @@ body {
     }
 }
 
+/* ! player tags */
+
+#player1 {
+    font-family: 'Luckiest Guy', cursive;
+    color: rgb(0, 122, 255);
+}
+
+#player2 {
+    font-family: 'Luckiest Guy', cursive;
+    color: rgb(255, 51, 0);
+}
+
+/* ! rounds text */
+
+#css_rounds {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 65px;
+    color: khaki;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/* ! stars */
+
+.css_star {
+    font-size: 32px !important;
+    padding-top: 7px;
+}
+
 .css_rps {
     font-size: 60px;
     padding: 5px;
@@ -39,4 +67,23 @@ body {
 .css_opteffect:hover {
     background-color: lightblue !important;
     cursor: pointer;
+}
+
+/* ! rps choosen option */
+
+.css_choptrps {
+    font-size: 200px;
+}
+
+.css_fill {
+    min-height: 80%;
+    height: 80%;
+}
+
+/* ! hr */
+
+#css_hr {
+    border: 0;
+    height: 3px;
+    background-image: linear-gradient(to right, rgba(3, 3, 3, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }

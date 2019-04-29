@@ -1,1 +1,1 @@
-# rpsgame
+# rock-paper-scissors
